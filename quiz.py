@@ -1,3 +1,4 @@
+# Quiz app - khandan soalat az JSON, gereftan javab, mohasebe nomre
 import json
 import time
 
