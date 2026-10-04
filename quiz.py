@@ -11,7 +11,7 @@ except FileNotFoundError:
 except json.JSONDecodeError:
     print("Khata: file questions.json kharabe (JSON moatabar nist).")
     exit()
-
+print(f"Khosh amadid! {len(questions)} soal dar peysh ast.")
 score = 0
 wrong_answers = []
 start_time = time.time()
