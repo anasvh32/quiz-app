@@ -1,15 +1,14 @@
 # Quiz app - khandan soalat az JSON, gereftan javab, mohasebe nomre
 import json
-import time
+import time 
+from question import load_questions
+from grading import is_correct
+from storage import save_result
 
 try:
-    with open("questions.json", "r", encoding="utf-8") as f:
-        questions = json.load(f)
-except FileNotFoundError:
-    print("Khata: file questions.json peyda nashod.")
-    exit()
-except json.JSONDecodeError:
-    print("Khata: file questions.json kharabe (JSON moatabar nist).")
+    questions = load_questions()
+except ValueError as e:
+    print(f"Khata: {e}")
     exit()
 print(f"Khosh amadid! {len(questions)} soal dar peysh ast.")
 score = 0
@@ -24,9 +23,8 @@ for q in questions:
 
     print(q["question"])
     user_answer = input("javabe shoma: ")
-    correct_answer = q["answer"]
 
-    if user_answer.strip().lower() == correct_answer.strip().lower():
+    if is_correct(user_answer, q["answer"]):
         print("Dorost!")
         score = score + 1
     else:
@@ -39,16 +37,11 @@ if wrong_answers:
     for wa in wrong_answers:
         print(f"- {wa['question']} (Javabe dorost: {wa['correct_answer']})")
 
-end_time = time.time()
-duration = end_time - start_time
-
-result = {
+duration = time.time() - start_time
+save_result({
     "score": score,
     "total": len(questions),
-    "duration_seconds": round(duration, 1)
-}
-
-with open("results.json", "w", encoding="utf-8") as f:
-    json.dump(result, f, ensure_ascii=False, indent=2)
+    "duration_seconds": round(duration, 1),
+})
 
 print("Natije zakhire shod.")
