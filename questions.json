@@ -8,5 +8,6 @@
     {"question": "Zaban rasmi Iran chie?", "answer": "Farsi"},
     {"question": "Jazr adad 9 chande?", "answer": "3"},
     {"question": "Mahaye paeez chandtast?", "answer": "3"},
-    {"question": "7 be elave-ye 8 chand mishe?", "answer": "15"}
+    {"question": "7 be elave-ye 8 chand mishe?", "answer": "15"},
+    {"question": "Paytakht Fransa kodoom ast?", "kind": "choice", "choices": ["Landan", "Paris", "Roum"], "answer": "Paris"}
 ]

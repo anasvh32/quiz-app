@@ -17,8 +17,22 @@ def load_questions(path: str = "questions.json") -> list[Question]:
         raise ValueError("questions.json bayad yek list az soalat bashe.")
 
     questions = []
+    seen = {}
     for number, item in enumerate(data, 1):
         if not isinstance(item, dict) or "question" not in item or "answer" not in item:
             raise ValueError(f"soal-e shomare {number} 'question' ya 'answer' nadare.")
-        questions.append(Question(text=item["question"], answer=item["answer"]))
+        key = item["question"].strip().lower()
+        if key in seen:
+            raise ValueError(f"soal-e shomare {number} tekrari-ye soal-e shomare {seen[key]} ast.")
+        seen[key] = number
+        kind = item.get("kind", "text")
+        choices = tuple(item.get("choices", ()))
+        text = item["question"]
+        if kind == "choice":
+            if len(choices) < 2:
+                raise ValueError(f"soal-e shomare {number} chandgozine-ie ama gozine-ash kame.")
+            for i, choice in enumerate(choices, 1):
+                text += f"\n  {i}) {choice}"
+
+        questions.append(Question(text=text, answer=item["answer"], kind=kind, choices=choices))
     return questions
