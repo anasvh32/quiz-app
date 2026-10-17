@@ -34,5 +34,5 @@ def load_questions(path: str = "questions.json") -> list[Question]:
             for i, choice in enumerate(choices, 1):
                 text += f"\n  {i}) {choice}"
 
-        questions.append(Question(text=text, answer=item["answer"], kind=kind, choices=choices))
+        questions.append(Question(text=text, answer=str(item["answer"]), kind=kind, choices=choices))
     return questions
