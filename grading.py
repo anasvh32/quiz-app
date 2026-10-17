@@ -3,6 +3,8 @@ from models import Question
 
 
 def is_correct(question: Question, user_answer: str) -> bool:
+    if not isinstance(user_answer, str):
+        raise TypeError("javab bayad matn (str) bashe")
     user_answer = user_answer.strip().lower()
     correct = question.answer.strip().lower()
 
