@@ -1,7 +1,10 @@
 # Khandan va check-e soalat. Hich input/print inja nist.
 import json
+import logging
 
 from models import Question
+
+logger = logging.getLogger(__name__)
 
 
 def load_questions(path: str = "questions.json") -> list[Question]:
@@ -9,8 +12,10 @@ def load_questions(path: str = "questions.json") -> list[Question]:
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
     except FileNotFoundError:
+        logger.error("file %s peyda nashod", path)
         raise ValueError("file questions.json peyda nashod.")
     except json.JSONDecodeError:
+        logger.error("file %s kharabe", path)
         raise ValueError("file questions.json kharabe (JSON moatabar nist).")
 
     if not isinstance(data, list):
@@ -35,4 +40,5 @@ def load_questions(path: str = "questions.json") -> list[Question]:
                 text += f"\n  {i}) {choice}"
 
         questions.append(Question(text=text, answer=str(item["answer"]), kind=kind, choices=choices))
+    logger.info("%d soal khande shod", len(questions))
     return questions

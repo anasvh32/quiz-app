@@ -4,6 +4,9 @@ import time
 from question import load_questions
 from grading import is_correct
 from storage import save_result
+import logging
+
+logging.basicConfig(filename="quiz.log", level=logging.INFO)
 
 try:
     questions = load_questions()
