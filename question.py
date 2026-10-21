@@ -7,19 +7,10 @@ from models import Question
 logger = logging.getLogger(__name__)
 
 
-def load_questions(path: str = "questions.json") -> list[Question]:
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-    except FileNotFoundError:
-        logger.error("file %s peyda nashod", path)
-        raise ValueError("file questions.json peyda nashod.")
-    except json.JSONDecodeError:
-        logger.error("file %s kharabe", path)
-        raise ValueError("file questions.json kharabe (JSON moatabar nist).")
-
+def parse_questions(data) -> list[Question]:
+    """yek list az dictionary ro check mikone va tabdil mikone be list-e Question"""
     if not isinstance(data, list):
-        raise ValueError("questions.json bayad yek list az soalat bashe.")
+        raise ValueError("questions bayad yek list bashe.")
 
     questions = []
     seen = {}
@@ -42,3 +33,17 @@ def load_questions(path: str = "questions.json") -> list[Question]:
         questions.append(Question(text=text, answer=str(item["answer"]), kind=kind, choices=choices))
     logger.info("%d soal khande shod", len(questions))
     return questions
+
+
+def load_questions(path: str = "questions.json") -> list[Question]:
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        logger.error("file %s peyda nashod", path)
+        raise ValueError("file questions.json peyda nashod.")
+    except json.JSONDecodeError:
+        logger.error("file %s kharabe", path)
+        raise ValueError("file questions.json kharabe (JSON moatabar nist).")
+
+    return parse_questions(data)
