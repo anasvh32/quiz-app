@@ -1,4 +1,5 @@
 # Service-e sakhtegi-ye soal (baraye test, bedune internet)
+from requests.exceptions import Timeout
 
 
 class FakeResponse:
@@ -28,3 +29,8 @@ SAMPLE_QUESTIONS = {
 def fake_get(url, timeout=None):
     """jaye requests.get: be jaye internet, hamishe yek javab-e sakhtegi mide"""
     return FakeResponse(200, SAMPLE_QUESTIONS)
+
+
+def fake_get_timeout(url, timeout=None):
+    """service be moal pasokh nemide, mesle requests ye Timeout mikhore"""
+    raise Timeout("service pasokh nadad")
