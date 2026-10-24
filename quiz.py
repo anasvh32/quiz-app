@@ -1,16 +1,21 @@
-# Quiz app - khandan soalat az JSON, gereftan javab, mohasebe nomre
-import json
-import time 
-from question import load_questions
+# Quiz app - khandan soalat az JSON ya service, gereftan javab, mohasebe nomre
+import sys
+import time
+from sources import get_questions
+from service import ServiceError
 from grading import is_correct
 from storage import save_result
 import logging
 
 logging.basicConfig(filename="quiz.log", level=logging.INFO)
 
+# python quiz.py          -> soalat az file
+# python quiz.py service  -> soalat az service
+source = sys.argv[1] if len(sys.argv) > 1 else "file"
+
 try:
-    questions = load_questions()
-except ValueError as e:
+    questions = get_questions(source)
+except (ValueError, ServiceError) as e:
     print(f"Khata: {e}")
     exit()
 print(f"Khosh amadid! {len(questions)} soal dar peysh ast.")
